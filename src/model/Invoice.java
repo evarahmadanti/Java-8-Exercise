@@ -1,11 +1,15 @@
+package model;
+
 public class Invoice {
-    private String customer;
-    private String title;
-    private Integer amount;
-    private Integer id;
+    private String customer, title;
+    private Integer amount, id;
 
-    public Invoice(customer, )
-
+    public Invoice(String customer, String title, Integer amount, Integer id){
+        this.customer = customer;
+        this.title = title;
+        this.amount = amount;
+        this.id = id;
+    }
     public String getCustomer() {
         return customer;
     }
