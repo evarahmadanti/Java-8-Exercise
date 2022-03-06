@@ -8,16 +8,17 @@ import java.util.stream.Collectors;
 public class AssignmentTwo {
     public static void main(String[] args) {
         List<Invoice> invoices = new ArrayList<>();
-        List<Integer> oracleAndTrainingInvoices = new ArrayList<>();
+        List<Invoice> oracleAndTrainingInvoices = new ArrayList<>();
         List<Integer> ids = new ArrayList<>();
         List<Integer> firstFiveIds = new ArrayList<>();
         invoices.stream()
-                .forEach(invoice -> {
+                .reduce(invoice -> {
                     if (invoice.getCustomer() == Customer.ORACLE){
                         if (invoice.getTitle().contains("Training")){
                             oracleAndTrainingInvoices.add(invoice);
                         }
                     }
+                    return invoice;
                 });
 
         List<Invoice> comparator = invoices.stream()
@@ -26,11 +27,14 @@ public class AssignmentTwo {
 
 
         List<Integer> idInv = oracleAndTrainingInvoices.stream()
-                .map(Invoice -> Invoice.id)
+                .map(Invoice -> Invoice.getId())
                 .collect(Collectors.toCollection(()->ids));
 
         ids.stream()
-                .iterator(i -> firstFiveIds.add(ids.get(i)) )
+                .reduce(i -> {
+                    boolean add = firstFiveIds.add(i);
+                    return add;
+                })
                 .limit(5);
     };
 }

@@ -1,8 +1,8 @@
 package model;
 
 public class Invoice {
-    private String customer, title;
-    private Integer amount, id;
+    public String customer, title;
+    public Integer amount, id;
 
     public Invoice(String customer, String title, Integer amount, Integer id){
         this.customer = customer;
