@@ -1,4 +1,4 @@
-import model.Invoice;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -9,32 +9,27 @@ public class AssignmentTwo {
     public static void main(String[] args) {
         List<Invoice> invoices = new ArrayList<>();
         List<Invoice> oracleAndTrainingInvoices = new ArrayList<>();
-        List<Integer> ids = new ArrayList<>();
         List<Integer> firstFiveIds = new ArrayList<>();
-        invoices.stream()
-                .reduce(invoice -> {
-                    if (invoice.getCustomer() == Customer.ORACLE){
-                        if (invoice.getTitle().contains("Training")){
-                            oracleAndTrainingInvoices.add(invoice);
-                        }
-                    }
-                    return invoice;
-                });
 
-        List<Invoice> comparator = invoices.stream()
-                .sorted((inv1, inv2) -> inv1.getAmount().compareTo(inv2.getAmount()))
+        // Adding the data dummy
+        invoices.add(new Invoice("Oracle", "Training", 10, 1));
+        invoices.add(new Invoice("Oracle", "Testing", 15, 2));
+        invoices.add(new Invoice("Oracle2", "Training", 30, 3));
+        invoices.add(new Invoice("Oracle3", "Testing", 20, 4));
+        invoices.add(new Invoice("Oracle", "Training", 25, 5));
+        invoices.add(new Invoice("Oracle5", "Training", 40, 6));
+
+        oracleAndTrainingInvoices = invoices.stream()
+                .filter(invoice -> invoice.getCustomer() == Customer.ORACLE && invoice.getTitle().contains("Training"))
+                .sorted(Comparator.comparingDouble(Invoice::getAmount))
+                .peek(e -> System.out.println("id : " + e.getId() + "\nCustomer : " + e.getCustomer()
+                        + "\nTittle : " + e.getTitle() + "\nAmount : " + e.getAmount() + "\n"))
                 .collect(Collectors.toList());
 
-
-        List<Integer> idInv = oracleAndTrainingInvoices.stream()
-                .map(Invoice -> Invoice.getId())
-                .collect(Collectors.toCollection(()->ids));
-
-        ids.stream()
-                .reduce(i -> {
-                    boolean add = firstFiveIds.add(i);
-                    return add;
-                })
-                .limit(5);
-    };
+        firstFiveIds = oracleAndTrainingInvoices.stream()
+                .map(Invoice::getId)
+                .limit(5)
+                .peek(e -> System.out.println("First Five Id : " + e))
+                .collect(Collectors.toList());
+    }
 }

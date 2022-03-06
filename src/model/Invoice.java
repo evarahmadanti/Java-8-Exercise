@@ -10,6 +10,7 @@ public class Invoice {
         this.amount = amount;
         this.id = id;
     }
+
     public String getCustomer() {
         return customer;
     }
